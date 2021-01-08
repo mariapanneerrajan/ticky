@@ -14,7 +14,7 @@ TEST_SOURCES = ${wildcard ./test/src/*.cpp}
 
 
 test: ${SOURCE_WO_MAIN} ${TEST_SOURCES}
-	${COMPILER} $^ -I./include ${LIBS} -o ${TEST_OUTPUT}
+	${COMPILER} $^ -I./include -L./lib ${LIBS} -o ${TEST_OUTPUT}
 	./${TEST_OUTPUT}
 
 sandbox:

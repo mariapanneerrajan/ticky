@@ -163,6 +163,36 @@ namespace ticky
         // ------------------------------------------------------------------
         glfwTerminate();
     }
+
+    void View_Opengl::draw_board(std::vector<char> board_cells_data)
+    {
+        
+    }
+
+    void View_Opengl::welcome_screen()
+    {
+        
+    }
+
+    void View_Opengl::show_instructions()
+    {
+        
+    }
+
+    int View_Opengl::get_player_X_input()
+    {
+        
+    }
+
+    int View_Opengl::get_player_O_input()
+    {
+        
+    }
+
+    void View_Opengl::show_end_screen()
+    {
+        
+    }
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
