@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/joysticks.dir/joysticks.c.o CMakeFiles/joysticks.dir/__/deps/glad_gl.c.o -o joysticks  ../src/libglfw3.a /usr/lib64/libm.so -lpthread /usr/lib64/librt.so /usr/lib64/libm.so -ldl 

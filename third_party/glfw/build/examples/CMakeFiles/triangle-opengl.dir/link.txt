@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/triangle-opengl.dir/triangle-opengl.c.o CMakeFiles/triangle-opengl.dir/__/deps/glad_gl.c.o -o triangle-opengl  ../src/libglfw3.a /usr/lib64/libm.so -lpthread /usr/lib64/librt.so /usr/lib64/libm.so -ldl 

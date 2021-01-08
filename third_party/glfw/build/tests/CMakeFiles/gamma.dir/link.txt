@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/gamma.dir/gamma.c.o CMakeFiles/gamma.dir/__/deps/glad_gl.c.o -o gamma  ../src/libglfw3.a /usr/lib64/libm.so -lpthread /usr/lib64/librt.so /usr/lib64/libm.so -ldl 
