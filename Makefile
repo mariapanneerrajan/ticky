@@ -7,7 +7,7 @@ SOURCES = ${wildcard ./src/*.cpp}
 
 # TODO: CREATE A WILDCARD HERE
 # +++++++++++++++++++++++++++++++++++++
-SOURCE_WO_MAIN = ./src/board.cpp  ./src/controller.cpp ./src/view_terminal.cpp ./src/view_opengl.cpp
+SOURCE_WO_MAIN = ./src/board.cpp  ./src/controller.cpp ./src/view_terminal.cpp ./src/view_opengl.cpp ./src/stb_image.cpp
 # +++++++++++++++++++++++++++++++++++++
 
 TEST_SOURCES = ${wildcard ./test/src/*.cpp}
