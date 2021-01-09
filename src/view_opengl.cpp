@@ -11,6 +11,10 @@ const char num_of_cells = 9;
 struct All_Cell_Vertices
 {
     float array_2d[9][20];
+    float anchor_x[9];
+    float anchor_y[9];
+    float width[9];
+    float height[9];
 };
 
 struct Cell
@@ -44,10 +48,15 @@ All_Cell_Vertices create_all_cell_vertices()
             anchor_x,          anchor_y + height,  0.0f, 0.0f, 1.0f,  // top left
         };
         
+        all_cell_vertices.anchor_x[i] = ((anchor_x * (1.0f)) + 1.0f)/2.0f;
+        all_cell_vertices.anchor_y[i] = ((anchor_y * (-1.0f)) + 1.0f)/2.0f;
+        all_cell_vertices.width[i] = width/2.0f;
+        all_cell_vertices.height[i] = height/2.0f;
         for(char j=0; j < 20; j++)
         {
-            all_cell_vertices.array_2d[i][j] = cell_vertices[j];
+            all_cell_vertices.array_2d[i][j] = cell_vertices[j];            
         }
+        
 
         if (i == 2 || i == 5)
         {
@@ -65,7 +74,7 @@ All_Cell_Vertices create_all_cell_vertices()
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+//void processInput(GLFWwindow *window, All_Cell_Vertices all_cell_vertices);
 
 // Settings
 const unsigned int SCR_WIDTH = 800;
@@ -99,6 +108,17 @@ const char *fragmentShader2Source = "#version 330 core\n"
 
 namespace ticky
 {
+    void View_Opengl::draw_board(std::vector<char> board_cells_data)
+    {
+        m_board_cells_data = board_cells_data;
+
+        for(char value : m_board_cells_data)
+        {
+            std::cout << value << std::endl;
+        }
+    }
+
+
     View_Opengl::View_Opengl()
     {
         // glfw: initialize and configure
@@ -210,18 +230,8 @@ namespace ticky
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cell_vertex_indices), cell_vertex_indices, GL_STATIC_DRAW);
         }
-        
-        
-        {
-        // // second triangle setup
-        // // ---------------------
-        // glBindVertexArray(VAOs[1]);	// note that we bind to a different VAO now
-        // glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);	// and a different VBO
-        // glBufferData(GL_ARRAY_BUFFER, sizeof(secondTriangle), secondTriangle, GL_STATIC_DRAW);
-        // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0); // because the vertex data is tightly packed we can also specify 0 as the vertex attribute's stride to let OpenGL figure it out
-        // glEnableVertexAttribArray(0);
-        // // glBindVertexArray(0); // not really necessary as well, but beware of calls that could affect VAOs while this one is bound (like binding element buffer objects, or enabling/disabling vertex attributes)
-        }
+
+
 
         // Load Textures 
         unsigned int texture;
@@ -234,7 +244,7 @@ namespace ticky
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         // load and generate the texture
         int width, height, nrChannels;
-        unsigned char *data = stbi_load("./res/wall.jpg", &width, &height, &nrChannels, 0);
+        unsigned char *data = stbi_load("./res/empty_cell.jpg", &width, &height, &nrChannels, 0);
         if (data)
         {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -247,6 +257,51 @@ namespace ticky
         stbi_image_free(data);
 
 
+        unsigned int texture1;
+        glGenTextures(1, &texture1);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        // set the texture wrapping/filtering options (on the currently bound texture object)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // load and generate the texture
+        width, height, nrChannels;
+        data = stbi_load("./res/symbol_X.jpg", &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << std::endl;
+        }
+        stbi_image_free(data);
+
+
+        unsigned int texture2;
+        glGenTextures(1, &texture2);
+        glBindTexture(GL_TEXTURE_2D, texture2);
+        // set the texture wrapping/filtering options (on the currently bound texture object)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // load and generate the texture
+        width, height, nrChannels;
+        data = stbi_load("./res/symbol_X.jpg", &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << std::endl;
+        }
+        stbi_image_free(data);
+
         // uncomment this call to draw in wireframe polygons.
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -256,7 +311,7 @@ namespace ticky
         {
             // input
             // -----
-            processInput(window);
+            //_process_input(window, all_cell_vertices);
 
             // render
             // ------
@@ -266,6 +321,14 @@ namespace ticky
             glUseProgram(shaderProgramOrange);
             for(char i=0; i < num_of_cells; i++)
             {
+                // if (m_board_cells_data[i] == 0)
+                //     glBindTexture(GL_TEXTURE_2D, texture);
+                // else if(m_board_cells_data[i] == 1)
+                //     glBindTexture(GL_TEXTURE_2D, texture1);
+                // else if(m_board_cells_data[i] == 2)
+                //     glBindTexture(GL_TEXTURE_2D, texture2);
+                    
+                glBindTexture(GL_TEXTURE_2D, texture);
                 glBindVertexArray(VAOs[i]);
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             }
@@ -295,11 +358,6 @@ namespace ticky
         glfwTerminate();
     }
 
-    void View_Opengl::draw_board(std::vector<char> board_cells_data)
-    {
-        
-    }
-
     void View_Opengl::welcome_screen()
     {
         
@@ -324,24 +382,51 @@ namespace ticky
     {
         
     }
+
+    // void View_Opengl::_process_input(GLFWwindow *window, All_Cell_Vertices all_cells_vertices)
+    // {
+        // if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        //     glfwSetWindowShouldClose(window, true);
+
+        // if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+        // {
+        //     double xpos, ypos;        
+        //     glfwGetCursorPos(window, &xpos, &ypos);
+
+        //     float x_pos = (float)xpos;
+        //     float y_pos = (float)ypos;
+
+        //     int m_viewport[4];
+        //     glGetIntegerv( GL_VIEWPORT, m_viewport);
+
+        //     float anchor_x = 0;
+        //     float anchor_y = 0;
+        //     float width = 0;
+        //     float height = 0;
+
+        //     for(char i = 0; i < 9; i++)
+        //     {
+        //         anchor_x = all_cells_vertices.anchor_x[i] * m_viewport[2];
+        //         anchor_y = all_cells_vertices.anchor_y[i] * m_viewport[3];
+        //         width = all_cells_vertices.width[0]*m_viewport[2];
+        //         height = all_cells_vertices.height[0]*m_viewport[3];
+
+        //         if(
+        //             x_pos > anchor_x &&
+        //             x_pos < (anchor_x + width) &&
+        //             y_pos < anchor_y &&
+        //             y_pos > (anchor_y - height)
+        //         )
+        //         {
+        //             std::cout << "Cell: " << (int)i << std::endl;
+        //             m_board_cells_data[i] = 1;
+        //         }
+        //     }
+        // }
+    // }
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-    {
-        double xpos, ypos;
-        //getting cursor position
-        glfwGetCursorPos(window, &xpos, &ypos);
-        std::cout << "Cursor Position at (" << xpos << " : " << ypos << std::endl;
-    }
-    
-}
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
