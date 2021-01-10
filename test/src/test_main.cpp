@@ -45,22 +45,17 @@ void test_controller_game_play()
     std::shared_ptr<ticky::Controller> controller = std::make_shared<ticky::Controller>(board, view_terminal);
     
     controller->start_game();
-
-    //controller->m_view->say_player_O_turn();
 }
 
 void test_view_opengl_draw_board()
 {
 
     std::shared_ptr<components::Board> board = std::make_shared<components::Board>();
-    // board->place_X_at(2);
-    // board->place_O_at(4);
-    // board->place_X_at(0);
-    // board->place_O_at(1);
+    std::shared_ptr<ticky::View_Opengl> view_opengl = std::make_shared<ticky::View_Opengl>();
+    std::shared_ptr<ticky::Controller> controller = std::make_shared<ticky::Controller>(board, view_opengl);
     
-    std::shared_ptr<ticky::View_Opengl> view_opengl = std::make_shared<ticky::View_Opengl>();    
-    //view_opengl->draw_board(board->get_cells());
-
+    controller->m_view->welcome_screen();
+    controller->m_view->show_instructions();
 }
 
 int main()

@@ -11,10 +11,17 @@ namespace ticky
     class View_Opengl: public View
     {
     private:
-        std::vector<char> m_board_cells_data;
-        //void _process_input(GLFWwindow *window, All_Cell_Vertices all_cells_vertices);
-    public:
+        const unsigned int SCR_WIDTH = 800;
+        const unsigned int SCR_HEIGHT = 600;
+
+        GLFWwindow* window;
+
+        unsigned int _create_texture(const char*);
+
+    public:        
         View_Opengl();
+
+        //void View_Opengl::is_canvas_open();
 
         void draw_board(std::vector<char> board_cells_data) override;
         
