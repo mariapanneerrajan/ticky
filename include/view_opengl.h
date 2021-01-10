@@ -5,7 +5,8 @@
 #include "view.h"
 #include <vector>
 
-struct All_Cell_Vertices;
+struct Game_Board_Quads;
+
 namespace ticky
 {
     class View_Opengl: public View
@@ -14,12 +15,24 @@ namespace ticky
         const unsigned int SCR_WIDTH = 800;
         const unsigned int SCR_HEIGHT = 600;
 
+        char user_input = -1;
+
         GLFWwindow* window;
 
         unsigned int _create_texture(const char*);
+        unsigned int _create_vertex_array_object(float vertex_data[20]);
+
+        unsigned int quad_vertex_indices[6] = {
+            0, 1, 2, // first triangle
+            3, 2, 0 // first box
+        };
+
+        bool _cell_pressed(Game_Board_Quads game_board_quads);
 
     public:        
         View_Opengl();
+
+        
 
         //void View_Opengl::is_canvas_open();
 

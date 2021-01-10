@@ -53,9 +53,8 @@ void test_view_opengl_draw_board()
     std::shared_ptr<components::Board> board = std::make_shared<components::Board>();
     std::shared_ptr<ticky::View_Opengl> view_opengl = std::make_shared<ticky::View_Opengl>();
     std::shared_ptr<ticky::Controller> controller = std::make_shared<ticky::Controller>(board, view_opengl);
-    
-    controller->m_view->welcome_screen();
-    controller->m_view->show_instructions();
+
+    controller->start_game();
 }
 
 int main()

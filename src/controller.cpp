@@ -18,14 +18,12 @@ namespace ticky
         char player_X_turn = 1; 
         
         m_view->welcome_screen();
+        m_view->show_instructions();
 
         while(m_game_over == false)
         {
-            
-            m_view->show_instructions();
-
             m_view->draw_board(
-                m_board->get_cells()                    
+                m_board->get_cells()
             );
 
             if(m_board->are_all_cells_occupied())

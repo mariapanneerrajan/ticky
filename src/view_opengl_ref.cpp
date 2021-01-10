@@ -383,47 +383,47 @@ namespace ticky
         
     }
 
-    // void View_Opengl::_process_input(GLFWwindow *window, All_Cell_Vertices all_cells_vertices)
-    // {
-        // if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        //     glfwSetWindowShouldClose(window, true);
+    void View_Opengl::_process_input(GLFWwindow *window, All_Cell_Vertices all_cells_vertices)
+    {
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, true);
 
-        // if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-        // {
-        //     double xpos, ypos;        
-        //     glfwGetCursorPos(window, &xpos, &ypos);
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+        {
+            double xpos, ypos;        
+            glfwGetCursorPos(window, &xpos, &ypos);
 
-        //     float x_pos = (float)xpos;
-        //     float y_pos = (float)ypos;
+            float x_pos = (float)xpos;
+            float y_pos = (float)ypos;
 
-        //     int m_viewport[4];
-        //     glGetIntegerv( GL_VIEWPORT, m_viewport);
+            int m_viewport[4];
+            glGetIntegerv( GL_VIEWPORT, m_viewport);
 
-        //     float anchor_x = 0;
-        //     float anchor_y = 0;
-        //     float width = 0;
-        //     float height = 0;
+            float anchor_x = 0;
+            float anchor_y = 0;
+            float width = 0;
+            float height = 0;
 
-        //     for(char i = 0; i < 9; i++)
-        //     {
-        //         anchor_x = all_cells_vertices.anchor_x[i] * m_viewport[2];
-        //         anchor_y = all_cells_vertices.anchor_y[i] * m_viewport[3];
-        //         width = all_cells_vertices.width[0]*m_viewport[2];
-        //         height = all_cells_vertices.height[0]*m_viewport[3];
+            for(char i = 0; i < 9; i++)
+            {
+                anchor_x = all_cells_vertices.anchor_x[i] * m_viewport[2];
+                anchor_y = all_cells_vertices.anchor_y[i] * m_viewport[3];
+                width = all_cells_vertices.width[0]*m_viewport[2];
+                height = all_cells_vertices.height[0]*m_viewport[3];
 
-        //         if(
-        //             x_pos > anchor_x &&
-        //             x_pos < (anchor_x + width) &&
-        //             y_pos < anchor_y &&
-        //             y_pos > (anchor_y - height)
-        //         )
-        //         {
-        //             std::cout << "Cell: " << (int)i << std::endl;
-        //             m_board_cells_data[i] = 1;
-        //         }
-        //     }
-        // }
-    // }
+                if(
+                    x_pos > anchor_x &&
+                    x_pos < (anchor_x + width) &&
+                    y_pos < anchor_y &&
+                    y_pos > (anchor_y - height)
+                )
+                {
+                    std::cout << "Cell: " << (int)i << std::endl;
+                    m_board_cells_data[i] = 1;
+                }
+            }
+        }
+    }
 }
 
 
