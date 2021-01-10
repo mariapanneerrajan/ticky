@@ -48,9 +48,6 @@ Quad create_quad(float anchor_x, float anchor_y, float width, float height)
     return quad;
 }
 
-
-
-
 Game_Board_Quads create_game_board_quads(float input_anchor_x, float input_anchor_y, float input_width, float input_height, float input_padding_x, float input_padding_y)
 {
     float original_anchor_x = input_anchor_x;
@@ -151,19 +148,6 @@ namespace ticky
 
         glUseProgram(shaderProgram);
         
-
-        while (!glfwWindowShouldClose(window))
-        {
-            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)            
-                break;
-            
-            glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-            
-            
-            glfwSwapBuffers(window);
-            glfwPollEvents();
-        }
     }
     
 
@@ -235,31 +219,6 @@ namespace ticky
         unsigned int VAOs[num_of_cells];
         for(char i = 0; i < num_of_cells; i++)
             VAOs[i] = _create_vertex_array_object(game_board_quads.quads[i].vertex_data);
-
-        // unsigned int VBOs[num_of_cells], VAOs[num_of_cells], EBO;
-        // glGenVertexArrays(num_of_cells, VAOs);
-        // glGenBuffers(num_of_cells, VBOs);
-        // glGenBuffers(1, &EBO);
-        
-        // // Draw Cells
-        // // --------------------        
-        // for(char i=0; i < num_of_cells; i++ )
-        // {
-        //     glBindVertexArray(VAOs[i]);
-        //     glBindBuffer(GL_ARRAY_BUFFER, VBOs[i]);
-        //     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 20, game_board_quads.quads[i].vertex_data, GL_STATIC_DRAW);
-
-        //     // Positoin Attribute
-        //     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-        //     glEnableVertexAttribArray(0);
-        //     // Texture Attribute
-        //     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));	
-        //     glEnableVertexAttribArray(1);
-        //     //glBindVertexArray(0); // no need to unbind at all as we directly bind a different VAO the next few lines
-
-        //     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        //     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quad_vertex_indices), quad_vertex_indices, GL_STATIC_DRAW);
-        // }
 
         unsigned int texture_id_empty = _create_texture("./res/empty_cell.jpg");
         unsigned int texture_id_symbol_X = _create_texture("./res/symbol_X.jpg");

@@ -12,6 +12,9 @@ SOURCE_WO_MAIN = ./src/board.cpp  ./src/controller.cpp ./src/view_terminal.cpp .
 
 TEST_SOURCES = ${wildcard ./test/src/*.cpp}
 
+ticky: ${SOURCES}
+	${COMPILER} $^ -I./include -L./lib ${LIBS} -o ${OUTPUT}	
+
 
 test: ${SOURCE_WO_MAIN} ${TEST_SOURCES}
 	${COMPILER} $^ -I./include -L./lib ${LIBS} -o ${TEST_OUTPUT}
